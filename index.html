@@ -26,7 +26,10 @@
             </tr>
             <tr>
                 <td>
-                    <input type="button" value="Decode" onclick="DecodeJWT($('#txtJWT'));" />
+                    <input type="button" value="Decode" onclick="DecodeJWT($('#txtJWT'), $('#txtJWT').val());" />
+                </td>
+                <td>
+                    <input id="deepLink" />
                 </td>
             </tr>
         </table>

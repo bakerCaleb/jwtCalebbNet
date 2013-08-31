@@ -1,16 +1,41 @@
-﻿function DecodeJWT(textArea) {
+﻿$(document).ready(function () {
+    var token = purl(window.location.href, true).fparam("jwt");
+
+    if (undefined != token) {
+        DecodeJWT($('#txtJWT'), token)
+    }
+});
+
+function DecodeJWT(textArea,jwtEncoded) {
+    var v = jwtEncoded;
     // need to add whitespace trim
     try{
-        textArea.val(FormatJWT(textArea.val()));
+        textArea.val(FormatJWT(jwtEncoded));
+        $('#deepLink').val(CreateDeepLink(jwtEncoded));
     } catch (err) {
         textArea.val(err);
     }
 }
 
 
+
 ////////////////////////////
 // Util functions
 //////////////////////////
+function CreateDeepLink(token) {
+    var segments = token.split('.');
+    if (segments.length == 3) {
+        if ("" == segments[2]) {
+            return window.location + "#jwt=" + segments[0] + "." + segments[1] + ".";
+        } else {
+            return window.location + "#jwt=" + segments[0] + "." + segments[1] + ".X";
+        }
+        
+    } else {
+        return "";
+    }
+}
+
 function Base64URLDecode(base64UrlEncodedValue) {
     var newValue = base64UrlEncodedValue.replace("+", "-").replace("/", "_");
     var result;

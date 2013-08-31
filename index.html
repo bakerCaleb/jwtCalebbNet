@@ -3,12 +3,33 @@
 <head>
     <title>JWT Decoder Page</title>
     <link rel="stylesheet" type="text/css" href="style.css" />
+    <script type="text/javascript" src="jquery-2.0.3.min.js" ></script>
+    <script type="text/javascript" src="purl.js" ></script>
+    <script type="text/javascript" src="myscripts.js"></script>
+    <style type="text/css">
+        #txtJWT {
+            height: 358px;
+            width: 1252px;
+        }
+    </style>
 </head>
 <body>
+    <header>
+        JWT Decoder
+    </header>
     <section>
-        test
-        <input type="text" id="rawjwt" />
-        <input type="button" onclick="alert('test');" />
+        <table id="mainTable">
+            <tr>
+                <td>
+                    <textarea id="txtJWT"  ></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="button" value="Decode" onclick="DecodeJWT($('#txtJWT'));" />
+                </td>
+            </tr>
+        </table>
     </section>
 </body>
 </html>

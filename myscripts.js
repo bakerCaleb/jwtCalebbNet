@@ -1,20 +1,79 @@
 ﻿$(document).ready(function () {
+    var inputboxWatermarkText = "Enter JWT Here";
+
     var token = purl(window.location.href, true).fparam("jwt");
 
+    $("#inputBox").bind('input', function () {
+        if (false == $('#inputBox').hasClass("watermark")) {
+            DisplayToken($('#inputBox').val());
+        }
+    });
+
+    //watermark jwt input box
+    $('#inputBox').blur(function () {
+        if ($(this).val().length == 0) {
+            $(this).val(inputboxWatermarkText).addClass("watermark");
+        }
+    });
+
+    $('#inputBox').focus(function () {
+        if ($(this).hasClass("watermark")) {
+            $(this).val("").removeClass("watermark");
+        }
+
+    });
+
+    $('.autoselect').focus(function () {
+
+        $(this).select();
+    });
+
+    $('.autoselect').mouseup(function (e) {
+        e.preventDefault();
+    });
+
+    $(".rightItem").hide();
+
+    //set token if present
+
     if (undefined != token) {
-        DecodeJWT($('#txtJWT'), token)
+        $('#inputBox').val(token);
+        DisplayToken(token);
+    } else {
+        $('#inputBox').val(inputboxWatermarkText).addClass("watermark");
     }
+
 });
 
-function DecodeJWT(textArea,jwtEncoded) {
-    var v = jwtEncoded;
-    // need to add whitespace trim
-    try{
-        textArea.val(FormatJWT(jwtEncoded));
-        $('#deepLink').val(CreateDeepLink(jwtEncoded));
+function DisplayToken(jwtEncoded) {
+
+    // get formated token
+    var formattedToken;
+
+    try {
+        formattedToken = FormatJWT(jwtEncoded);
+        // populate deepLink
+        var dLink = CreateDeepLink(jwtEncoded)
+
+        if ("" == dLink) {
+            $(".rightItem").hide();
+        }
+
+        $('#deepLink').val(dLink);
+
+        if ("" != dLink) {
+            $(".rightItem").fadeIn("medium", "swing");
+        }
+
+        // write JWT to content
+        WriteFormatedTokenToPage(formattedToken);
     } catch (err) {
-        textArea.val(err);
+        WriteFormatedTokenToPage(err);
     }
+}
+
+function WriteFormatedTokenToPage(token) {
+    $('#decodedToken').html(token);
 }
 
 
@@ -30,7 +89,7 @@ function CreateDeepLink(token) {
         } else {
             return window.location + "#jwt=" + segments[0] + "." + segments[1] + ".X";
         }
-        
+
     } else {
         return "";
     }
@@ -39,11 +98,10 @@ function CreateDeepLink(token) {
 function Base64URLDecode(base64UrlEncodedValue) {
     var newValue = base64UrlEncodedValue.replace("+", "-").replace("/", "_");
     var result;
-    
-    try{
+
+    try {
         result = window.atob(newValue);
-    }catch(e)
-    {
+    } catch (e) {
         throw "Base64URL decode of JWT segment failed";
     }
 
@@ -59,9 +117,13 @@ function FormatJson(jsonStringIn) {
     var newlineNext = false;
     var slashCount = 0;
 
-    try{
+    if (jsonStringIn == "") {
+        return "";
+    }
+
+    try {
         $.parseJSON(jsonStringIn);
-    }catch(e){
+    } catch (e) {
         return "[THIS SEGEMENT DOES NOT CONTAIN A VALID JSON OBJECT]";
     }
 
@@ -78,9 +140,9 @@ function FormatJson(jsonStringIn) {
             newlineNext = true;
         }
 
-        // If outside of a token, a newline char may be needed. Otherwise, just the char is added. Indent.
+            // If outside of a token, a newline char may be needed. Otherwise, just the char is added. Indent.
         else if (false == inToken && "{[".indexOf(inputAsArray[i]) > -1) {
-            PrintChar(indention, i>0, inputAsArray[i], chars);
+            PrintChar(indention, i > 0, inputAsArray[i], chars);
             indention += 1;
             newlineNext = true;
         }
@@ -93,10 +155,9 @@ function FormatJson(jsonStringIn) {
             newlineNext = false;
         }
 
-        if('\\' == inputAsArray[i])
-        {
-            slashCount ++;
-        }else{
+        if ('\\' == inputAsArray[i]) {
+            slashCount++;
+        } else {
             slashCount = 0;
         }
     }
@@ -107,9 +168,9 @@ function FormatJson(jsonStringIn) {
 
 function PrintChar(indentCount, newline, c, outputArray) {
     if (newline) {
-        outputArray.push('\n');
-        for (var i = 0; i < 3 * indentCount; i++) {
-            outputArray.push(' ');
+        outputArray = AddStringToBuffer(outputArray, "<br/>");
+        for (var i = 0; i < indentCount; i++) {
+            outputArray = AddStringToBuffer(outputArray, "<span class='indent'>&nbsp</span>");
         }
     }
     outputArray.push(c);
@@ -118,8 +179,11 @@ function PrintChar(indentCount, newline, c, outputArray) {
 function FormatJWT(jwt) {
     var segments = jwt.split('.');
 
-    if(segments.length != 3)
-    {
+    if (jwt == "") {
+        return "";
+    }
+
+    if (segments.length != 3) {
         throw "JWT is required to have three segments"
     }
 
@@ -132,5 +196,15 @@ function FormatJWT(jwt) {
         signature = "[no signature]";
     }
 
-    return header + ".\n" + content + ".\n" + signature;
+    return header + ".<br/>" + content + ".<br/>" + signature;
+}
+
+function AddStringToBuffer(buffer, value) {
+    var valueArray = value.split('');
+
+    for (var i = 0; i < valueArray.length; i++) {
+        buffer.push(valueArray[i]);
+    }
+
+    return buffer;
 }

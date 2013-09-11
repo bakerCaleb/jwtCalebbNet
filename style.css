@@ -3,30 +3,27 @@
     margin-top:-1px;
 }
 
-
 .headerFont {
     font-size:large;
-     vertical-align:central;
-     
+    
 }
 
-table {
-    
+table {   
     min-width:1024px;
     max-width:2048px;
     margin-left:auto;
     margin-right:auto;  
-   
 }
 
 .leftmargin {
-        width:160px;
-        display: inline;
-        float:left;
-        margin-left:1em;
+    width:160px;
+    display: inline;
+    float:left;
+    margin-left:1em;
 }
+
 .leftmargintable {
-        width:160px;
+    width:160px;
 }
 
 .rightItem {

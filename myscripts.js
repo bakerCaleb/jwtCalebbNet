@@ -82,12 +82,14 @@ function WriteFormatedTokenToPage(token) {
 // Util functions
 //////////////////////////
 function CreateDeepLink(token) {
+    var base = "http://" + window.location.host + "/";
+
     var segments = token.split('.');
     if (segments.length == 3) {
         if ("" == segments[2]) {
-            return window.location + "#jwt=" + segments[0] + "." + segments[1] + ".";
+            return base + "#jwt=" + segments[0] + "." + segments[1] + ".";
         } else {
-            return window.location + "#jwt=" + segments[0] + "." + segments[1] + ".X";
+            return base  + "#jwt=" + segments[0] + "." + segments[1] + ".X";
         }
 
     } else {

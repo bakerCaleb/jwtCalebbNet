@@ -112,7 +112,7 @@ function Base64URLDecode(base64UrlEncodedValue) {
 
 function FormatJson(jsonStringIn) {
     var jsonStringOut = "";
-    var chars = [];
+    var sb = StringBuilder();
     var inputAsArray = jsonStringIn.split('');
     var inToken = false;
     var indention = 0;
@@ -138,22 +138,22 @@ function FormatJson(jsonStringIn) {
 
         // If outside of a token, a newline char may be needed. Otherwise, just the char is added. 
         if (false == inToken && ",".indexOf(inputAsArray[i]) > -1) {
-            PrintChar(indention, newlineNext, inputAsArray[i], chars);
+            PrintChar(indention, newlineNext, inputAsArray[i], sb);
             newlineNext = true;
         }
 
             // If outside of a token, a newline char may be needed. Otherwise, just the char is added. Indent.
         else if (false == inToken && "{[".indexOf(inputAsArray[i]) > -1) {
-            PrintChar(indention, i > 0, inputAsArray[i], chars);
+            PrintChar(indention, i > 0, inputAsArray[i], sb);
             indention += 1;
             newlineNext = true;
         }
         else if (false == inToken && "}]".indexOf(inputAsArray[i]) > -1) {
             indention -= 1;
-            PrintChar(indention, true, inputAsArray[i], chars);
+            PrintChar(indention, true, inputAsArray[i], sb);
             newlineNext = true;
         } else {
-            PrintChar(indention, newlineNext, inputAsArray[i], chars);
+            PrintChar(indention, newlineNext, inputAsArray[i], sb);
             newlineNext = false;
         }
 
@@ -164,18 +164,19 @@ function FormatJson(jsonStringIn) {
         }
     }
 
-    // return the characters as a string
-    return chars.join("");
+    // return the formated value as a string
+    return sb.Value();
 }
 
-function PrintChar(indentCount, newline, c, outputArray) {
+function PrintChar(indentCount, newline, newchar, formatedvalue) {
     if (newline) {
-        outputArray = AddStringToBuffer(outputArray, "<br/>");
+        formatedvalue.Add("<br/>");
+
         for (var i = 0; i < indentCount; i++) {
-            outputArray = AddStringToBuffer(outputArray, "<span class='indent'>&nbsp</span>");
+            formatedvalue.Add("<span class='indent'>&nbsp</span>");
         }
     }
-    outputArray.push(c);
+    formatedvalue.Add(newchar);
 }
 
 function FormatJWT(jwt) {
@@ -201,12 +202,21 @@ function FormatJWT(jwt) {
     return header + ".<br/>" + content + ".<br/>" + signature;
 }
 
-function AddStringToBuffer(buffer, value) {
-    var valueArray = value.split('');
+function StringBuilder() {
+    var value = [];
 
-    for (var i = 0; i < valueArray.length; i++) {
-        buffer.push(valueArray[i]);
-    }
+    return {
+        Value: function () {
+            return value.join("");
+        },
 
-    return buffer;
+        Add: function (string) {
+
+            var valueArray = string.split('');
+
+            for (var i = 0; i < valueArray.length; i++) {
+                value.push(valueArray[i]);
+            }
+        }
+    };
 }

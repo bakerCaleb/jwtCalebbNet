@@ -89,7 +89,7 @@ function CreateDeepLink(token) {
         if ("" == segments[2]) {
             return base + "#jwt=" + segments[0] + "." + segments[1] + ".";
         } else {
-            return base  + "#jwt=" + segments[0] + "." + segments[1] + ".X";
+            return base + "#jwt=" + segments[0] + "." + segments[1] + ".X";
         }
 
     } else {
@@ -110,77 +110,9 @@ function Base64URLDecode(base64UrlEncodedValue) {
     return result;
 }
 
-function FormatJson(jsonStringIn) {
-    var jsonStringOut = "";
-    var sb = StringBuilder();
-    var inputAsArray = jsonStringIn.split('');
-    var inToken = false;
-    var indention = 0;
-    var newlineNext = false;
-    var slashCount = 0;
-
-    if (jsonStringIn == "") {
-        return "";
-    }
-
-    try {
-        $.parseJSON(jsonStringIn);
-    } catch (e) {
-        return "[THIS SEGEMENT DOES NOT CONTAIN A VALID JSON OBJECT]";
-    }
-
-    for (var i = 0; i < inputAsArray.length ; i++) {
-
-        // Determine if entering or exiting a quoted token
-        if (i > 0 && "\"".indexOf(inputAsArray[i]) > -1 && (slashCount % 2) == 0) {
-            inToken = !inToken;
-        }
-
-        // If outside of a token, a newline char may be needed. Otherwise, just the char is added. 
-        if (false == inToken && ",".indexOf(inputAsArray[i]) > -1) {
-            PrintChar(indention, newlineNext, inputAsArray[i], sb);
-            newlineNext = true;
-        }
-
-            // If outside of a token, a newline char may be needed. Otherwise, just the char is added. Indent.
-        else if (false == inToken && "{[".indexOf(inputAsArray[i]) > -1) {
-            PrintChar(indention, i > 0, inputAsArray[i], sb);
-            indention += 1;
-            newlineNext = true;
-        }
-        else if (false == inToken && "}]".indexOf(inputAsArray[i]) > -1) {
-            indention -= 1;
-            PrintChar(indention, true, inputAsArray[i], sb);
-            newlineNext = true;
-        } else {
-            PrintChar(indention, newlineNext, inputAsArray[i], sb);
-            newlineNext = false;
-        }
-
-        if ('\\' == inputAsArray[i]) {
-            slashCount++;
-        } else {
-            slashCount = 0;
-        }
-    }
-
-    // return the formated value as a string
-    return sb.Value();
-}
-
-function PrintChar(indentCount, newline, newchar, formatedvalue) {
-    if (newline) {
-        formatedvalue.Add("<br/>");
-
-        for (var i = 0; i < indentCount; i++) {
-            formatedvalue.Add("<span class='indent'>&nbsp</span>");
-        }
-    }
-    formatedvalue.Add(newchar);
-}
-
 function FormatJWT(jwt) {
     var segments = jwt.split('.');
+   
 
     if (jwt == "") {
         return "";
@@ -190,8 +122,8 @@ function FormatJWT(jwt) {
         throw "JWT is required to have three segments"
     }
 
-    var header = FormatJson(Base64URLDecode(segments[0]));
-    var content = FormatJson(Base64URLDecode(segments[1]));
+    var header = DisplayJSON(Base64URLDecode(segments[0])).GetFormattedValue();
+    var content = DisplayJSON(Base64URLDecode(segments[1])).GetFormattedValue();
 
     var signature = "[signature]";
 
@@ -199,7 +131,7 @@ function FormatJWT(jwt) {
         signature = "[no signature]";
     }
 
-    return header + ".<br/>" + content + ".<br/>" + signature;
+    return header + ".</div>" + content + ".</div>" + signature;
 }
 
 function StringBuilder() {
@@ -219,4 +151,211 @@ function StringBuilder() {
             }
         }
     };
+}
+
+function DisplayJSON(value) {
+
+    var inputChars = value.split('');
+    var index;
+
+    try {
+        $.parseJSON(value);
+    } catch (e) {
+        return "[THIS SEGEMENT DOES NOT CONTAIN A VALID JSON OBJECT]";
+    }
+
+
+    return {
+
+        GetFormattedValue: function () {
+            var builder = StringBuilder();
+            index = 0;
+            indent = 0;
+            this.FormatNext(builder, indent);
+
+            return builder.Value();
+        },
+
+        FormatNext: function (builder, indent) {
+
+            switch (this.NextValueType()) {
+                case "value":
+                    this.FormatValue(builder,indent);
+                    break;
+                case "object":
+                    this.FormatObject(builder,indent);
+                    break;
+                case "array":
+                    this.FormatArray(builder,indent);
+                    break;
+                default:
+                    throw "unexpected condition in FormatNext";
+                    break;
+            }
+        },
+
+        FormatObject: function (builder,indent) {
+            var done = false;
+           // this.StartLine(builder);
+            builder.Add(this.ExpectedChar("{"));
+            indent++;
+            this.EndLine(builder);
+
+            while (done == false) {
+                
+
+                
+                this.StartLine(builder,indent);
+                this.FormatType(builder, indent);
+                builder.Add(this.ExpectedChar(":"));
+                builder.Add(" ");
+                this.FormatNext(builder, indent);
+
+                if (this.Peek() == ",") {
+                    builder.Add(this.ExpectedChar(","));
+                } else {
+                    done = true;
+                }
+
+                this.EndLine(builder);
+            }
+
+            indent--;
+            this.StartLine(builder,indent);
+            builder.Add(this.ExpectedChar("}"));
+            //this.EndLine(builder);
+        },
+
+        FormatArray: function (builder, indent) {
+            var done = false;
+
+            //this.StartLine(builder, indent);
+            builder.Add(this.ExpectedChar("["));
+            indent++;
+            //this.EndLine(builder);
+
+            
+            while (done == false) {
+                this.StartLine(builder,indent);
+                this.FormatNext(builder);
+
+                if (this.Peek() == ",") {
+                    builder.Add(this.ExpectedChar(","));
+                } else {
+                    done = true;
+                }
+                this.EndLine(builder);
+            }
+
+            
+            indent--;
+            this.StartLine(builder, indent);
+            
+            builder.Add(this.ExpectedChar("]"));
+         
+        },
+
+        FormatValue: function (builder, indent) {
+            builder.Add("<span class='jsonValue'>");
+            if (this.Peek() == "\"") {
+                this.ReadQuotedString(builder);
+            }else{
+                while (" \t\r\n,}]".indexOf(inputChars[index]) < 0) {
+                    builder.Add(inputChars[index]);
+                    index++;
+                }
+            }
+            builder.Add("</span>");
+        },
+
+        FormatType: function (builder, indent) {
+            builder.Add("<span class='jsonField'>");
+            this.ReadQuotedString(builder);
+            builder.Add("</span>");
+        },
+
+        ReadQuotedString: function(builder)
+        {
+            var slashCount = 0;
+
+            if (this.Peek() == "\"") {
+                slashCount = 0;
+                builder.Add("\"");
+                index++;
+
+                while ("\"" != inputChars[index] && (slashCount % 2) == 0) {
+                    builder.Add(inputChars[index]);
+
+                    if ("\\" == inputChars[index]) {
+                        slashCount++;
+                    } else {
+                        slashCount = 0;
+                    }
+
+                    index++;
+                }
+
+                builder.Add(inputChars[index]);
+                index++;
+            } else {
+                throw "expected quote for type";
+            }
+        },
+
+        ExpectedChar: function (char) {
+            if (this.Peek() == char) {
+                index++;
+                return char
+            }
+
+            throw "unexpected char";
+        },
+
+        Peek: function () {
+            while (" \t\r\n".indexOf(inputChars[index]) > -1) {
+                index++;
+            }
+
+            return inputChars[index];
+        },
+
+        NextValueType: function()
+        {
+            switch(this.Peek()){
+                case "{":
+                    return "object";
+                    break;
+                case "[":
+                    return "array";
+                    break;
+                case ",":
+                    return ",";
+                    break;
+                case ":":
+                    return ":";
+                    break;
+                case "]":
+                    return "]";
+                    break;
+                case "}":
+                    return "}";
+                    break;
+                default:
+                    return "value";
+            }
+        },
+
+        StartLine: function (builder, indent) {
+            builder.Add("<div>");
+            //builder.Add("(" + indent + ")");
+            for (var i = 0; i < indent; i++) {
+                builder.Add("<span class='indent'>&nbsp</span>");
+            }
+        },
+
+        EndLine: function (builder) {
+            builder.Add("</div>");
+        }
+    }
+
 }

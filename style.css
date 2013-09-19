@@ -58,3 +58,11 @@ table {
 #decodedToken {
     margin-top: 10px;
 }
+
+.jsonField {
+    color: #E40101;
+}
+
+.jsonValue {
+    color:#2486B5;
+}

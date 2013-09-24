@@ -3,6 +3,10 @@
 
     var token = purl(window.location.href, true).fparam("jwt");
 
+    if (undefined === token) {
+        token = purl(window.location.href, true).param("id_token");
+    }
+
     $("#inputBox").bind('input', function () {
         if (false == $('#inputBox').hasClass("watermark")) {
             DisplayToken($('#inputBox').val());

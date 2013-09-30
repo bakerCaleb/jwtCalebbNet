@@ -3,3 +3,7 @@ c:\users\calebb\documents\visual studio 2012\Projects\jwtCalebbNet\jwtCalebbNet\
 c:\users\calebb\documents\visual studio 2012\Projects\jwtCalebbNet\jwtCalebbNet\obj\Debug\jwtCalebbNet.dll
 c:\users\calebb\documents\visual studio 2012\Projects\jwtCalebbNet\jwtCalebbNet\obj\Debug\jwtCalebbNet.pdb
 c:\users\calebb\documents\visual studio 2012\Projects\jwtCalebbNet\jwtCalebbNet\obj\Debug\jwtCalebbNet.csprojResolveAssemblyReference.cache
+C:\Users\calebb\Documents\GitHub\jwtCalebbNet\bin\jwtCalebbNet.dll
+C:\Users\calebb\Documents\GitHub\jwtCalebbNet\bin\jwtCalebbNet.pdb
+C:\Users\calebb\Documents\GitHub\jwtCalebbNet\obj\Debug\jwtCalebbNet.dll
+C:\Users\calebb\Documents\GitHub\jwtCalebbNet\obj\Debug\jwtCalebbNet.pdb

@@ -1,6 +1,75 @@
 ﻿body {
+<<<<<<< HEAD
     font-family:Segoe UI,Verdana,helvetica,sans-serif;
     margin-top:-1px;
+=======
+    font-family:"Segoe UI",Verdana,helvetica,sans-serif;
+    margin-top:-1px;
+}
+
+.headerFont {
+    font-size:medium;
+    
+}
+
+table {   
+    min-width:1024px;
+    max-width:2048px;
+    margin-left:auto;
+    margin-right:auto;  
+}
+
+.leftmargin {
+    width:160px;
+    display: inline;
+    float:left;
+    margin-left:1em;
+}
+
+.leftmargintable {
+    width:160px;
+}
+
+.rightItem {
+    float:right;
+}
+
+.watermark {
+    color:#AAAAAA;
+}
+
+#inputBox {
+    width:500px;
+}
+
+#deepLink {
+    margin-left:.5em;
+    margin-right:1em;
+    width:8em;
+}
+
+.headerrow {
+    background-color:#FAFAFA;
+    height:50px;
+}
+
+.indent {
+    float:left;
+    width:2em;
+    display:inline-block;
+}
+
+#decodedToken {
+    margin-top: 10px;
+}
+
+.jsonField {
+    color: #E40101;
+}
+
+.jsonValue {
+    color:#2486B5;
+>>>>>>> 937cb6c920d865c7b4baa4553e37273fe89a7f2c
 }
 
 

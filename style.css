@@ -1,8 +1,7 @@
 ﻿body {
-<<<<<<< HEAD
+
     font-family:Segoe UI,Verdana,helvetica,sans-serif;
     margin-top:-1px;
-=======
     font-family:"Segoe UI",Verdana,helvetica,sans-serif;
     margin-top:-1px;
 }
@@ -69,7 +68,6 @@ table {
 
 .jsonValue {
     color:#2486B5;
->>>>>>> 937cb6c920d865c7b4baa4553e37273fe89a7f2c
 }
 
 

@@ -1,43 +1,6 @@
 ﻿$(document).ready(function () {
     var inputboxWatermarkText = "Enter JWT Here";
 
-<<<<<<< HEAD
-    $("#inputBox").bind('input', function () {
-        if(false == $('#inputBox').hasClass("watermark"))
-        {
-            DisplayToken($('#inputBox').val());
-        }
-    });
-
-    //watermark jwt input box
-    $('#inputBox').blur(function () {
-        if ($(this).val().length == 0) {
-            $(this).val(inputboxWatermarkText).addClass("watermark");
-        }
-    });
-
-    $('#inputBox').focus(function () {
-        if ($(this).hasClass("watermark")) {
-            $(this).val("").removeClass("watermark");
-        }
-  
-    });
-
-    $('.autoselect').focus(function () {
- 
-        $(this).select();
-    });
-
-    $('.autoselect').mouseup(function (e) {
-            e.preventDefault();
-    });
-
-    $(".rightItem").hide();
-
-
-    // check for jwt query param, if set pre-populate the token input
-=======
->>>>>>> 937cb6c920d865c7b4baa4553e37273fe89a7f2c
     var token = purl(window.location.href, true).fparam("jwt");
 
     if (undefined === token) {
@@ -96,22 +59,14 @@ function DisplayToken(jwtEncoded) {
         // populate deepLink
         var dLink = CreateDeepLink(jwtEncoded)
 
-<<<<<<< HEAD
-        if( "" == dLink){
-=======
         if ("" == dLink) {
->>>>>>> 937cb6c920d865c7b4baa4553e37273fe89a7f2c
             $(".rightItem").hide();
         }
 
         $('#deepLink').val(dLink);
 
         if ("" != dLink) {
-<<<<<<< HEAD
-            $(".rightItem").fadeIn("medium","swing");
-=======
             $(".rightItem").fadeIn("medium", "swing");
->>>>>>> 937cb6c920d865c7b4baa4553e37273fe89a7f2c
         }
 
         // write JWT to content
@@ -159,30 +114,9 @@ function Base64URLDecode(base64UrlEncodedValue) {
     return result;
 }
 
-<<<<<<< HEAD
-function FormatJson(jsonStringIn) {
-    var jsonStringOut = "";
-    var sb = StringBuilder();
-    var inputAsArray = jsonStringIn.split('');
-    var inToken = false;
-    var indention = 0;
-    var newlineNext = false;
-    var slashCount = 0;
-
-    if (jsonStringIn == "") {
-        return "";
-    }
-
-    try{
-        $.parseJSON(jsonStringIn);
-    }catch(e){
-        return "[THIS SEGEMENT DOES NOT CONTAIN A VALID JSON OBJECT]";
-    }
-=======
 function FormatJWT(jwt) {
     var segments = jwt.split('.');
-   
->>>>>>> 937cb6c920d865c7b4baa4553e37273fe89a7f2c
+
 
     if (jwt == "") {
         return "";
@@ -192,53 +126,15 @@ function FormatJWT(jwt) {
         throw "JWT is required to have three segments"
     }
 
-<<<<<<< HEAD
-        // If outside of a token, a newline char may be needed. Otherwise, just the char is added. 
-        if (false == inToken && ",".indexOf(inputAsArray[i]) > -1) {
-            PrintChar(indention, newlineNext, inputAsArray[i], sb);
-            newlineNext = true;
-        }
-
-        // If outside of a token, a newline char may be needed. Otherwise, just the char is added. Indent.
-        else if (false == inToken && "{[".indexOf(inputAsArray[i]) > -1) {
-            PrintChar(indention, i>0, inputAsArray[i], sb);
-            indention += 1;
-            newlineNext = true;
-        }
-        else if (false == inToken && "}]".indexOf(inputAsArray[i]) > -1) {
-            indention -= 1;
-            PrintChar(indention, true, inputAsArray[i], sb);
-            newlineNext = true;
-        } else {
-            PrintChar(indention, newlineNext, inputAsArray[i], sb);
-            newlineNext = false;
-        }
-=======
     var header = DisplayJSON(Base64URLDecode(segments[0])).GetFormattedValue();
     var content = DisplayJSON(Base64URLDecode(segments[1])).GetFormattedValue();
 
     var signature = "[signature]";
->>>>>>> 937cb6c920d865c7b4baa4553e37273fe89a7f2c
 
     if (segments.length < 3) {
         signature = "[no signature]";
     }
 
-<<<<<<< HEAD
-    // return the formated value as a string
-    return sb.Value();
-}
-
-function PrintChar(indentCount, newline, newchar, formatedvalue) {
-    if (newline) {
-        formatedvalue.Add("<br/>");
-
-        for (var i = 0; i < indentCount; i++) {
-            formatedvalue.Add("<span class='indent'>&nbsp</span>");
-        }
-    }
-    formatedvalue.Add(newchar);
-=======
     return header + ".</div>" + content + ".</div>" + signature;
 }
 
@@ -259,20 +155,10 @@ function StringBuilder() {
             }
         }
     };
->>>>>>> 937cb6c920d865c7b4baa4553e37273fe89a7f2c
 }
 
 function DisplayJSON(value) {
 
-<<<<<<< HEAD
-    if (jwt == "") {
-        return "";
-    }
-
-    if(segments.length != 3)
-    {
-        throw "JWT is required to have three segments"
-=======
     var inputChars = value.split('');
     var index;
 
@@ -280,7 +166,6 @@ function DisplayJSON(value) {
         $.parseJSON(value);
     } catch (e) {
         return "[THIS SEGEMENT DOES NOT CONTAIN A VALID JSON OBJECT]";
->>>>>>> 937cb6c920d865c7b4baa4553e37273fe89a7f2c
     }
 
 
@@ -299,13 +184,13 @@ function DisplayJSON(value) {
 
             switch (this.NextValueType()) {
                 case "value":
-                    this.FormatValue(builder,indent);
+                    this.FormatValue(builder, indent);
                     break;
                 case "object":
-                    this.FormatObject(builder,indent);
+                    this.FormatObject(builder, indent);
                     break;
                 case "array":
-                    this.FormatArray(builder,indent);
+                    this.FormatArray(builder, indent);
                     break;
                 default:
                     throw "unexpected condition in FormatNext";
@@ -313,18 +198,18 @@ function DisplayJSON(value) {
             }
         },
 
-        FormatObject: function (builder,indent) {
+        FormatObject: function (builder, indent) {
             var done = false;
-           // this.StartLine(builder);
+            // this.StartLine(builder);
             builder.Add(this.ExpectedChar("{"));
             indent++;
             this.EndLine(builder);
 
             while (done == false) {
-                
 
-                
-                this.StartLine(builder,indent);
+
+
+                this.StartLine(builder, indent);
                 this.FormatType(builder, indent);
                 builder.Add(this.ExpectedChar(":"));
                 builder.Add(" ");
@@ -340,7 +225,7 @@ function DisplayJSON(value) {
             }
 
             indent--;
-            this.StartLine(builder,indent);
+            this.StartLine(builder, indent);
             builder.Add(this.ExpectedChar("}"));
             //this.EndLine(builder);
         },
@@ -353,9 +238,9 @@ function DisplayJSON(value) {
             indent++;
             //this.EndLine(builder);
 
-            
+
             while (done == false) {
-                this.StartLine(builder,indent);
+                this.StartLine(builder, indent);
                 this.FormatNext(builder);
 
                 if (this.Peek() == ",") {
@@ -366,19 +251,19 @@ function DisplayJSON(value) {
                 this.EndLine(builder);
             }
 
-            
+
             indent--;
             this.StartLine(builder, indent);
-            
+
             builder.Add(this.ExpectedChar("]"));
-         
+
         },
 
         FormatValue: function (builder, indent) {
             builder.Add("<span class='jsonValue'>");
             if (this.Peek() == "\"") {
                 this.ReadQuotedString(builder);
-            }else{
+            } else {
                 while (" \t\r\n,}]".indexOf(inputChars[index]) < 0) {
                     builder.Add(inputChars[index]);
                     index++;
@@ -393,8 +278,7 @@ function DisplayJSON(value) {
             builder.Add("</span>");
         },
 
-        ReadQuotedString: function(builder)
-        {
+        ReadQuotedString: function (builder) {
             var slashCount = 0;
 
             if (this.Peek() == "\"") {
@@ -438,9 +322,8 @@ function DisplayJSON(value) {
             return inputChars[index];
         },
 
-        NextValueType: function()
-        {
-            switch(this.Peek()){
+        NextValueType: function () {
+            switch (this.Peek()) {
                 case "{":
                     return "object";
                     break;
@@ -477,27 +360,4 @@ function DisplayJSON(value) {
         }
     }
 
-<<<<<<< HEAD
-    return header + ".<br/>" + content + ".<br/>" + signature;
-}
-
-function StringBuilder() {
-    var value = [];
-
-    return {
-        Value: function () {
-            return value.join("");
-        },
-
-        Add: function (string) {
-
-            var valueArray = string.split('');
-
-            for (var i = 0; i < valueArray.length; i++) {
-                value.push(valueArray[i]);
-            }
-        }
-    };
-=======
->>>>>>> 937cb6c920d865c7b4baa4553e37273fe89a7f2c
 }

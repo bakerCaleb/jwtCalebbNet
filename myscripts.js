@@ -1,20 +1,80 @@
 ﻿$(document).ready(function () {
+    var inputboxWatermarkText = "Enter JWT Here";
+
+    $("#inputBox").bind('input', function () {
+        if(false == $('#inputBox').hasClass("watermark"))
+        {
+            DisplayToken($('#inputBox').val());
+        }
+    });
+
+    //watermark jwt input box
+    $('#inputBox').blur(function () {
+        if ($(this).val().length == 0) {
+            $(this).val(inputboxWatermarkText).addClass("watermark");
+        }
+    });
+
+    $('#inputBox').focus(function () {
+        if ($(this).hasClass("watermark")) {
+            $(this).val("").removeClass("watermark");
+        }
+  
+    });
+
+    $('.autoselect').focus(function () {
+ 
+        $(this).select();
+    });
+
+    $('.autoselect').mouseup(function (e) {
+            e.preventDefault();
+    });
+
+    $(".rightItem").hide();
+
+
+    // check for jwt query param, if set pre-populate the token input
     var token = purl(window.location.href, true).fparam("jwt");
 
     if (undefined != token) {
-        DecodeJWT($('#txtJWT'), token)
+        $('#inputBox').val(token);
+        DisplayToken(token);
+    } else {
+        $('#inputBox').val(inputboxWatermarkText).addClass("watermark");
     }
+
 });
 
-function DecodeJWT(textArea,jwtEncoded) {
-    var v = jwtEncoded;
-    // need to add whitespace trim
-    try{
-        textArea.val(FormatJWT(jwtEncoded));
-        $('#deepLink').val(CreateDeepLink(jwtEncoded));
+function DisplayToken(jwtEncoded) {
+
+    // get formated token
+    var formattedToken;
+
+    try {
+        formattedToken = FormatJWT(jwtEncoded);
+        // populate deepLink
+        var dLink = CreateDeepLink(jwtEncoded)
+
+        if( "" == dLink){
+            $(".rightItem").hide();
+        }
+
+        $('#deepLink').val(dLink);
+
+        if ("" != dLink) {
+            $(".rightItem").fadeIn("medium","swing");
+        }
+
+        // write JWT to content
+        WriteFormatedTokenToPage(formattedToken);
     } catch (err) {
-        textArea.val(err);
+        WriteFormatedTokenToPage(err);
     }
+}
+
+function WriteFormatedTokenToPage(token) {
+    $('#decodedToken').html(token);
 }
 
 
@@ -52,12 +112,16 @@ function Base64URLDecode(base64UrlEncodedValue) {
 
 function FormatJson(jsonStringIn) {
     var jsonStringOut = "";
-    var chars = [];
+    var sb = StringBuilder();
     var inputAsArray = jsonStringIn.split('');
     var inToken = false;
     var indention = 0;
     var newlineNext = false;
     var slashCount = 0;
+
+    if (jsonStringIn == "") {
+        return "";
+    }
 
     try{
         $.parseJSON(jsonStringIn);
@@ -74,22 +138,22 @@ function FormatJson(jsonStringIn) {
 
         // If outside of a token, a newline char may be needed. Otherwise, just the char is added. 
         if (false == inToken && ",".indexOf(inputAsArray[i]) > -1) {
-            PrintChar(indention, newlineNext, inputAsArray[i], chars);
+            PrintChar(indention, newlineNext, inputAsArray[i], sb);
             newlineNext = true;
         }
 
         // If outside of a token, a newline char may be needed. Otherwise, just the char is added. Indent.
         else if (false == inToken && "{[".indexOf(inputAsArray[i]) > -1) {
-            PrintChar(indention, i>0, inputAsArray[i], chars);
+            PrintChar(indention, i>0, inputAsArray[i], sb);
             indention += 1;
             newlineNext = true;
         }
         else if (false == inToken && "}]".indexOf(inputAsArray[i]) > -1) {
             indention -= 1;
-            PrintChar(indention, true, inputAsArray[i], chars);
+            PrintChar(indention, true, inputAsArray[i], sb);
             newlineNext = true;
         } else {
-            PrintChar(indention, newlineNext, inputAsArray[i], chars);
+            PrintChar(indention, newlineNext, inputAsArray[i], sb);
             newlineNext = false;
         }
 
@@ -101,22 +165,27 @@ function FormatJson(jsonStringIn) {
         }
     }
 
-    // return the characters as a string
-    return chars.join("");
+    // return the formated value as a string
+    return sb.Value();
 }
 
-function PrintChar(indentCount, newline, c, outputArray) {
+function PrintChar(indentCount, newline, newchar, formatedvalue) {
     if (newline) {
-        outputArray.push('\n');
-        for (var i = 0; i < 3 * indentCount; i++) {
-            outputArray.push(' ');
+        formatedvalue.Add("<br/>");
+
+        for (var i = 0; i < indentCount; i++) {
+            formatedvalue.Add("<span class='indent'>&nbsp</span>");
         }
     }
-    outputArray.push(c);
+    formatedvalue.Add(newchar);
 }
 
 function FormatJWT(jwt) {
     var segments = jwt.split('.');
+
+    if (jwt == "") {
+        return "";
+    }
 
     if(segments.length != 3)
     {
@@ -132,5 +201,24 @@ function FormatJWT(jwt) {
         signature = "[no signature]";
     }
 
-    return header + ".\n" + content + ".\n" + signature;
+    return header + ".<br/>" + content + ".<br/>" + signature;
+}
+
+function StringBuilder() {
+    var value = [];
+
+    return {
+        Value: function () {
+            return value.join("");
+        },
+
+        Add: function (string) {
+
+            var valueArray = string.split('');
+
+            for (var i = 0; i < valueArray.length; i++) {
+                value.push(valueArray[i]);
+            }
+        }
+    };
 }

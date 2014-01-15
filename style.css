@@ -144,5 +144,6 @@ table {
     padding: 5px 15px;
     position: absolute;
     z-index: 98;
-    width: 320px;
+    width: 450px;
+    opacity:1;
 }

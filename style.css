@@ -69,6 +69,7 @@ table {
 }
 
 
+
 .headerFont {
     font-size:large;
      vertical-align:central;
@@ -125,4 +126,23 @@ table {
 
 #decodedToken {
     margin-top: 10px;
+}
+
+.tooltip {
+    display: inline;
+    position: relative;
+}
+
+.tooltip:hover:after{
+    background: #333;
+    background: #2486B5;
+    border-radius: 5px;
+    bottom: 26px;
+    color: #fff;
+    content: attr(tip);
+    left: 20%;
+    padding: 5px 15px;
+    position: absolute;
+    z-index: 98;
+    width: 320px;
 }

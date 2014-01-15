@@ -46,8 +46,12 @@
     } else {
         $('#inputBox').val(inputboxWatermarkText).addClass("watermark");
     }
-
+    AddTips();
 });
+
+function AddTips() {
+    $('.jsonValue[tip]').css("text-decoration", "underline");
+}
 
 function DisplayToken(jwtEncoded) {
 
@@ -71,6 +75,7 @@ function DisplayToken(jwtEncoded) {
 
         // write JWT to content
         WriteFormatedTokenToPage(formattedToken);
+        AddTips();
     } catch (err) {
         WriteFormatedTokenToPage(err);
     }
@@ -161,6 +166,8 @@ function DisplayJSON(value) {
 
     var inputChars = value.split('');
     var index;
+    var currentFieldname = "";
+    var digits = "1234567890";
 
     try {
         $.parseJSON(value);
@@ -260,26 +267,74 @@ function DisplayJSON(value) {
         },
 
         FormatValue: function (builder, indent) {
-            builder.Add("<span class='jsonValue'>");
+            var currentValue = "";
+
+            var tempBuilder = StringBuilder();
+
+            
             if (this.Peek() == "\"") {
-                this.ReadQuotedString(builder);
+                //read value as a string
+                currentValue = this.ReadQuotedString(tempBuilder);
+            }else if(digits.indexOf(inputChars[index]) >= 0) 
+            {
+                //read value as an int
+                currentValue = this.ReadInt(tempBuilder);
             } else {
                 while (" \t\r\n,}]".indexOf(inputChars[index]) < 0) {
-                    builder.Add(inputChars[index]);
+                    tempBuilder.Add(inputChars[index]);
                     index++;
                 }
             }
+
+            //Add Help Text for claim Value
+            var helpText = this.GetHelpTextForValue(currentFieldname, currentValue);
+
+            if ("" != helpText) {
+                builder.Add("<span class='jsonValue tooltip' ");
+                builder.Add("tip='");
+                builder.Add(helpText);
+                builder.Add("'>");
+            } else {
+                builder.Add("<span class='jsonValue' >");
+            }
+
+            builder.Add(tempBuilder.Value());
+            builder.Add("</span>");
+
+
             builder.Add("</span>");
         },
+        
+        GetHelpTextForValue: function(propertyName,propertyValue)
+        {
+            var timeFields = ["exp", "nbf", "iat"];
 
+            var returnValue = StringBuilder();
+
+
+            /// Check if the value is a EPOCH time value. If it is, help shows the converted time
+            if (timeFields.indexOf(propertyName) > -1) {
+                var intTime = parseInt(propertyValue);
+
+                if (!isNaN(intTime)) {
+                    var date = new Date(intTime * 1000);
+                    returnValue.Add(date.toString());
+                }
+            }
+
+            return returnValue.Value();
+        },
+
+        //This function reads the name of a json property
         FormatType: function (builder, indent) {
             builder.Add("<span class='jsonField'>");
-            this.ReadQuotedString(builder);
+            currentFieldname = this.ReadQuotedString(builder);
             builder.Add("</span>");
         },
 
         ReadQuotedString: function (builder) {
             var slashCount = 0;
+            var returnValue = StringBuilder();
 
             if (this.Peek() == "\"") {
                 slashCount = 0;
@@ -288,7 +343,7 @@ function DisplayJSON(value) {
 
                 while ("\"" != inputChars[index] && (slashCount % 2) == 0) {
                     builder.Add(inputChars[index]);
-
+                    returnValue.Add(inputChars[index]);
                     if ("\\" == inputChars[index]) {
                         slashCount++;
                     } else {
@@ -299,11 +354,25 @@ function DisplayJSON(value) {
                 }
 
                 builder.Add(inputChars[index]);
+                
                 index++;
             } else {
                 throw "expected quote for type";
             }
+        
+            return returnValue.Value();
         },
+
+        ReadInt: function (builder)
+        {
+            var returnValue = StringBuilder();
+            while (digits.indexOf(inputChars[index]) >= 0) {
+                builder.Add(inputChars[index]);
+                returnValue.Add(inputChars[index]);
+                index++;
+            }
+            return returnValue.Value();
+        },   
 
         ExpectedChar: function (char) {
             if (this.Peek() == char) {

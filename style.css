@@ -99,6 +99,16 @@ table {
     float:right;
 }
 
+#ExampleLink {
+    margin-left:.5em;    
+    margin-bottom:-10px;
+    font-size:smaller;
+    vertical-align:text-bottom;
+    text-align:right;
+    color:#AAAAAA;
+    cursor:pointer;
+}
+
 .watermark {
     color:#AAAAAA;
 }

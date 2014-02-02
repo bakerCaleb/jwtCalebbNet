@@ -209,6 +209,7 @@ function DisplayJSON(value) {
     try {
         $.parseJSON(value);
     } catch (e) {
+        _gaq.push(['_trackEvent', 'exception', 'jwt parse error']);
         return "[THIS SEGEMENT DOES NOT CONTAIN A VALID JSON OBJECT]";
     }
 

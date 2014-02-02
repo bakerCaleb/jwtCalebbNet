@@ -107,6 +107,7 @@ table {
     text-align:right;
     color:#AAAAAA;
     cursor:pointer;
+    text-decoration:underline;
 }
 
 .watermark {

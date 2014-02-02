@@ -139,6 +139,11 @@ function DisplayToken(jwtEncoded) {
 
 function WriteFormatedTokenToPage(token) {
     $('#decodedToken').html(token);
+
+   
+   if ($('#inputBox').hasClass("watermark")) {
+       $('#inputBox').removeClass("watermark");
+   }
 }
 
 

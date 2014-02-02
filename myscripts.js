@@ -2,6 +2,9 @@
 _gaq.push(['_setAccount', 'UA-43600044-1']);
 _gaq.push(['_trackPageview']);
 
+var diagTipCount = 0;
+var diagExampleCount = 0;
+
 (function () {
     var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
     ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
@@ -47,7 +50,10 @@ $(document).ready(function () {
     $("#ExampleLink").click(function (e) {
         $('#inputBox').val(exampleJWT);
         DisplayToken(exampleJWT);
-        _gaq.push(['_trackEvent', 'user_action', 'use_example_token']);
+        if (diagExampleCount == 0) {
+            _gaq.push(['_trackEvent', 'user_action', 'use_example_token']);
+        }
+        diagExampleCount++;
     });
 
     //set token if present
@@ -64,7 +70,10 @@ $(document).ready(function () {
 function AddTips() {
     $('.jsonValue[tip]').css("text-decoration", "underline");
     $('.jsonValue[tip]').mouseenter(function () {
-        _gaq.push(['_trackEvent', 'user_action', 'claim_value_tip']);
+        if (diagTipCount == 0) {
+            _gaq.push(['_trackEvent', 'user_action', 'claim_value_tip']);
+        }
+        diagTipCount++;
 
     });
 }

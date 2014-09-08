@@ -86,6 +86,15 @@ function AddTips() {
         diagTipCount++;
 
     });
+
+    $('.jsonField[tip]').css("text-decoration", "underline");
+    $('.jsonField[tip]').mouseenter(function () {
+        if (diagTipCount == 0) {
+            _gaq.push(['_trackEvent', 'user_action', 'claim_value_tip']);
+        }
+        diagTipCount++;
+
+    });
 }
 
 function ShowShareBox(boolShow) {
@@ -332,7 +341,6 @@ function DisplayJSON(value) {
             var currentValue = "";
 
             var tempBuilder = StringBuilder();
-
             
             if (this.Peek() == "\"") {
                 //read value as a string
@@ -349,6 +357,7 @@ function DisplayJSON(value) {
             }
 
             //Add Help Text for claim Value
+            
             var helpText = this.GetHelpTextForValue(currentFieldname, currentValue);
 
             if ("" != helpText) {
@@ -361,9 +370,6 @@ function DisplayJSON(value) {
             }
 
             builder.Add(tempBuilder.Value());
-            builder.Add("</span>");
-
-
             builder.Add("</span>");
         },
         
@@ -387,11 +393,37 @@ function DisplayJSON(value) {
             return returnValue.Value();
         },
 
+        GetHelpTextForName: function(propertyName)
+        {
+            var value = "";
+            switch (propertyName) {
+                case 'alg':
+                    value = "Signing algorithm. Defined in the JWS specification";
+                    break;
+            }
+            return value;
+        },
+
         //This function reads the name of a json property
         FormatType: function (builder, indent) {
-            builder.Add("<span class='jsonField'>");
-            currentFieldname = this.ReadQuotedString(builder);
+            var tempBuilder = StringBuilder();
+            currentFieldname = this.ReadQuotedString(tempBuilder);
+            var helpText = this.GetHelpTextForName(currentFieldname);
+
+            if ("" != helpText) {
+                builder.Add("<span class='jsonField tooltip' ");
+                builder.Add("tip='");
+                builder.Add(helpText);
+                builder.Add("'>");
+            } else {
+                builder.Add("<span class='jsonField' ");
+                builder.Add(" >");
+
+            }
+
+            builder.Add(currentFieldname);
             builder.Add("</span>");
+
         },
 
         ReadQuotedString: function (builder) {
@@ -403,7 +435,8 @@ function DisplayJSON(value) {
                 builder.Add("\"");
                 index++;
 
-                while ("\"" != inputChars[index] && (slashCount % 2) == 0) {
+                //Continue to read characters until the final quote is found. The final quote is not preceeded by an even number of back slaches
+                while (!("\"" == inputChars[index] && (slashCount % 2) == 0)) {
                     builder.Add(inputChars[index]);
                     returnValue.Add(inputChars[index]);
                     if ("\\" == inputChars[index]) {
@@ -437,7 +470,9 @@ function DisplayJSON(value) {
         },   
 
         ExpectedChar: function (char) {
-            if (this.Peek() == char) {
+            
+            var cp = this.Peek();
+            if (cp == char) {
                 index++;
                 return char
             }

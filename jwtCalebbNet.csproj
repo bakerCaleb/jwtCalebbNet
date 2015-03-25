@@ -61,6 +61,7 @@
     <Content Include="BingSiteAuth.xml" />
     <Content Include="index.html" />
     <Content Include="jquery-2.0.3.min.js" />
+    <Content Include="MUtest.html" />
     <Content Include="myscripts.js" />
     <Content Include="purl.js" />
     <Content Include="style.css" />

@@ -398,7 +398,34 @@ function DisplayJSON(value) {
             var value = "";
             switch (propertyName) {
                 case 'alg':
-                    value = "Signing algorithm. Defined in the JWS specification";
+                    value = "Algorithm claim : signing algorithm. (source JWS spec)";
+                    break;
+                case 'iss':
+                    value = "Issuer claim : identifies principal that issued the JWT (source JWT spec)";
+                    break;
+                case 'sub':
+                    value = "Subject claim : identifies the principal that is the subject of the JWT (source JWT spec)";
+                    break;
+                case 'aud':
+                    value = "Audience claim : identifies the recipients that the JWT is intended for (source JWT spec)";
+                    break;
+                case 'exp':
+                    value = "Expiration claim : identifies the expiration time on or after which the JWT MUST NOT be accepted for processing (source JWT spec)";
+                    break;
+                case 'nbf':
+                    value = "Not Before claim : identifies the time before which the JWT MUST NOT be accepted for processing (source JWT spec)";
+                    break;
+                case 'iat':
+                    value = "Issued At claim : identifies the time at which the JWT was issued (source JWT spec)";
+                    break;
+                case 'jti':
+                    value = "JWT ID claim : provides a unique identifier for the JWT (source JWT spec)";
+                    break;
+                case 'typ':
+                    value = "Type claim : used to declare the type of the signed content (source JWS spec)";
+                    break;
+                case 'x5t':
+                    value = "x.509 certificate thumbprint claim : provides a base64url encoded SHA-1 thumbprint  (source JWS spec)";
                     break;
             }
             return value;

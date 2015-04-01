@@ -427,6 +427,28 @@ function DisplayJSON(value) {
                 case 'x5t':
                     value = "x.509 certificate thumbprint claim : provides a base64url encoded SHA-1 thumbprint  (source JWS spec)";
                     break;
+                case 'tid':
+                    value = "identifies the tenant ID of the token issuer. (source Azure Active Directory documentation)";
+                    break;
+                case 'amr':
+                    value = "Authentication Methods References. JSON array of strings that are identifiers for authentication methods used in the authentication. (source OpenID Connect Core specification)";
+                    break;
+                case 'name':
+                    value = "End-User full name in displayable form including all name parts. (source OpenID Connect Core specification)";
+                    break;
+                case 'given_name':
+                    value = "Given name(s) or first name(s) of the End-User. (source OpenID Connect Core specification)";
+                    break;
+                case 'family_name':
+                    value = "Surname(s) or last name(s) of the End-User. (source OpenID Connect Core specification)";
+                    break;
+                case 'oid':
+                    value = "identifies the object ID of the token subject. (source Azure Active Directory documentation)";
+                    break;
+                case 'groups':
+                    value = "A list of groups that the user belongs to, either thorough direct membership, nested groups, or dynamically calculated.. (source SCIM 2.0 Core Schema specification)";
+                    break;
+
             }
             return value;
         },

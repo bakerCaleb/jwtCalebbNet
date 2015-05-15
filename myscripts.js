@@ -80,8 +80,12 @@ $(document).ready(function () {
 function AddTips() {
     $('.jsonValue[tip]').css("text-decoration", "underline");
     $('.jsonValue[tip]').mouseenter(function () {
+        analytics.track('claim Value');
         if (diagTipCount == 0) {
             _gaq.push(['_trackEvent', 'user_action', 'claim_value_tip']);
+            
+
+
         }
         diagTipCount++;
 
@@ -89,6 +93,10 @@ function AddTips() {
 
     $('.jsonField[tip]').css("text-decoration", "underline");
     $('.jsonField[tip]').mouseenter(function () {
+        analytics.track('claim type', {
+            claim: $(this).html()
+        });
+        
         if (diagTipCount == 0) {
             _gaq.push(['_trackEvent', 'user_action', 'claim_value_tip']);
         }

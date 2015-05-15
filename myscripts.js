@@ -140,6 +140,9 @@ function DisplayToken(jwtEncoded) {
         // write JWT to content
         WriteFormatedTokenToPage(formattedToken);
         _gaq.push(['_trackEvent', 'user_action', 'token_diplayed']);
+        analytics.track('Token Decode', {
+            plan: 'Enterprise'
+        });
         AddTips();
     } catch (err) {
         WriteFormatedTokenToPage(err);

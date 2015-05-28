@@ -59,6 +59,7 @@ $(document).ready(function () {
 
     $("#ExampleLink").click(function (e) {
         $('#inputBox').val(exampleJWT);
+        alert("SHO");
         DisplayToken(exampleJWT);
         if (diagExampleCount == 0) {
             _gaq.push(['_trackEvent', 'user_action', 'use_example_token']);

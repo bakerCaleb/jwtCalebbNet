@@ -46,13 +46,8 @@ table {
 }
 
 .headerrow {
-    text-align:center;
+    background-color:#FAFAFA;
     height:50px;
-}
-
-.news {
-    text-align:center;
-    color:lightgray;
 }
 
 .indent {

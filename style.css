@@ -130,6 +130,10 @@ table {
     height:50px;
 }
 
+.news {
+    text-align:center;
+    color:gray;
+}
 .indent {
     float:left;
     width:2em;

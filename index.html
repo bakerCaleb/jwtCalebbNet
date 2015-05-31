@@ -28,21 +28,7 @@
         window.appInsights = appInsights;
         appInsights.trackPageView();
     </script>
-    <!-- KISSmetrics tracking snippet -->
-    <script type="text/javascript">
-var _kmq = _kmq || [];
-var _kmk = _kmk || 'e1c868ddc21ffe64c8455212913e7d8935df6ce8';
-function _kms(u){
-  setTimeout(function(){
-    var d = document, f = d.getElementsByTagName('script')[0],
-    s = d.createElement('script');
-    s.type = 'text/javascript'; s.async = true; s.src = u;
-    f.parentNode.insertBefore(s, f);
-  }, 1);
-}
-_kms('//i.kissmetrics.com/i.js');
-_kms('//doug1izaerwt3.cloudfront.net/' + _kmk + '.1.js');
-    </script>
+ 
      <script type="text/javascript" src="myscripts.js">
 
 
@@ -51,7 +37,7 @@ _kms('//doug1izaerwt3.cloudfront.net/' + _kmk + '.1.js');
 <body>
     <section>
         <table>
-            <tr><td class="news">JWT is now an RFC! <a href="http://self-issued.info/?p=1387" onclick=" _gaq.push(['_trackEvent', 'link_click', 'jwt_rfc', 'jwt_rfc']);">Learn more</a></td></tr>
+            <tr><td class="news">JWT is now an RFC! <a href="http://self-issued.info/?p=1387" onclick="_gaq.push(['_trackEvent', 'link_click', 'jwt_rfc', 'jwt_rfc']);">Learn more</a></td></tr>
             <tr class="headerrow">
                 <td >
                     <span class="leftmargin headerFont" >JWT Decoder</span>

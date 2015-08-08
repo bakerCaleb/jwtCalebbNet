@@ -188,16 +188,28 @@ function CreateDeepLink(token) {
 }
 
 function Base64URLDecode(base64UrlEncodedValue) {
-    var newValue = base64UrlEncodedValue.replace("+", "-").replace("/", "_");
-    var result;
+    var result1;
+    var result2;
+    var newValue = base64UrlEncodedValue.replace("-", "+").replace("_", "/");
+    
 
     try {
-        result = window.atob(newValue);
+
+            result1 = window.atob(newValue);
+            result2 = decodeURIComponent(escape(window.atob(newValue)));
+            if (result1 != result2) {
+                _gaq.push(['_trackEvent', 'error_prevented', 'unicode decode']);
+                analytics.track('Token Decode', {
+                    plan: 'Enterprise'
+                });
+            }
+
+
     } catch (e) {
         throw "Base64URL decode of JWT segment failed";
     }
 
-    return result;
+    return result2;
 }
 
 function FormatJWT(jwt) {

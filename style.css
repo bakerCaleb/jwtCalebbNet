@@ -32,7 +32,7 @@ table {
 }
 
 .watermark {
-    color:#AAAAAA;
+    text-decoration-color:darkslateblue;
 }
 
 #inputBox {
@@ -46,7 +46,7 @@ table {
 }
 
 .headerrow {
-    background-color:#FAFAFA;
+    background-color:red;
     height:50px;
 }
 

@@ -1,12 +1,10 @@
 ﻿body {
-
     font-family:Segoe UI,Verdana,helvetica,sans-serif;
     margin-top:5px;
 }
 
 .headerFont {
-    font-size:16px;
-    
+    font-size:16px;  
 }
 
 table {   
@@ -57,7 +55,7 @@ table {
 }
 
 #decodedToken {
-    margin-top: 10px;
+    margin-top: 16px;
 }
 
 .jsonField {
@@ -66,37 +64,6 @@ table {
 
 .jsonValue {
     color:#2486B5;
-}
-
-
-
-.headerFont {
-    font-size:20px;
-     vertical-align:central;
-     
-}
-
-table {
-    
-    min-width:1024px;
-    max-width:2048px;
-    margin-left:auto;
-    margin-right:auto;  
-   
-}
-
-.leftmargin {
-        width:160px;
-        display: inline;
-        float:left;
-        margin-left:1em;
-}
-.leftmargintable {
-        width:160px;
-}
-
-.rightItem {
-    float:right;
 }
 
 #ExampleLink {
@@ -110,20 +77,6 @@ table {
     text-decoration:underline;
 }
 
-.watermark {
-    color:#AAAAAA;
-}
-
-#inputBox {
-    width:500px;
-    
-}
-
-#deepLink {
-    margin-left:.5em;
-    margin-right:1em;
-    width:8em;
-}
 
 .headerrow {
     background-color:#FAFAFA;
@@ -138,10 +91,6 @@ table {
     float:left;
     width:2em;
     display:inline-block;
-}
-
-#decodedToken {
-    margin-top: 10px;
 }
 
 .tooltip {

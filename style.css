@@ -4,7 +4,7 @@
 }
 
 .headerFont {
-    font-size:16px;  
+    font-size:20px;  
 }
 
 table {   
@@ -44,7 +44,6 @@ table {
 }
 
 .headerrow {
-    background-color:red;
     height:50px;
 }
 
@@ -67,25 +66,18 @@ table {
 }
 
 #ExampleLink {
-    margin-left:.5em;    
-    margin-bottom:-10px;
+    margin-left:1em;    
     font-size:16px;
-    vertical-align:text-bottom;
+   
     text-align:right;
-    color:#AAAAAA;
+    color:darkslateblue;
     cursor:pointer;
-    text-decoration:underline;
-}
-
-
-.headerrow {
-    background-color:#FAFAFA;
-    height:50px;
 }
 
 .news {
-    text-align:center;
+    text-align:right;
     color:gray;
+    width:200px;
 }
 .indent {
     float:left;

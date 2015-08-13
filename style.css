@@ -5,7 +5,7 @@
 }
 
 .headerFont {
-    font-size:medium;
+    font-size:16px;
     
 }
 
@@ -71,7 +71,7 @@ table {
 
 
 .headerFont {
-    font-size:large;
+    font-size:20px;
      vertical-align:central;
      
 }
@@ -102,7 +102,7 @@ table {
 #ExampleLink {
     margin-left:.5em;    
     margin-bottom:-10px;
-    font-size:smaller;
+    font-size:16px;
     vertical-align:text-bottom;
     text-align:right;
     color:#AAAAAA;

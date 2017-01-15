@@ -16,9 +16,10 @@ WaitForLoad();
     
 function WaitForLoad() {
     if (window.jQuery) {
+       
         InitPage();
-    }
-    else {
+    } else {
+        
         setTimeout(WaitForLoad, 50);
     }
 }
@@ -93,7 +94,7 @@ function InitPage(){
 function AddTips() {
     $('.jsonValue[tip]').css("text-decoration", "underline");
     $('.jsonValue[tip]').mouseenter(function () {
-        analytics.track('claim Value');
+        
         if (diagTipCount == 0) {
             _gaq.push(['_trackEvent', 'user_action', 'claim_value_tip']);
             
@@ -106,9 +107,7 @@ function AddTips() {
 
     $('.jsonField[tip]').css("text-decoration", "underline");
     $('.jsonField[tip]').mouseenter(function () {
-        analytics.track('claim type', {
-            claim: $(this).html()
-        });
+        
         
         if (diagTipCount == 0) {
             _gaq.push(['_trackEvent', 'user_action', 'claim_value_tip']);
@@ -161,9 +160,7 @@ function DisplayToken(jwtEncoded) {
         // write JWT to content
         WriteFormatedTokenToPage(formattedToken);
         _gaq.push(['_trackEvent', 'user_action', 'token_diplayed']);
-        analytics.track('Token Decode', {
-            plan: 'Enterprise'
-        });
+        
         AddTips();
     } catch (err) {
         WriteFormatedTokenToPage(err);
@@ -212,9 +209,7 @@ function Base64URLDecode(base64UrlEncodedValue) {
             result2 = decodeURIComponent(escape(window.atob(newValue)));
             if (result1 != result2) {
                 _gaq.push(['_trackEvent', 'error_prevented', 'unicode decode']);
-                analytics.track('Token Decode', {
-                    plan: 'Enterprise'
-                });
+                
             }
 
 

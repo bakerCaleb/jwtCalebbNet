@@ -68,7 +68,7 @@ $(document).ready(function () {
 
     //set token if present
 
-    if (undefined != token) {
+    if (undefined != token) {        
         $('#inputBox').val(token);
         DisplayToken(token);
     } else {

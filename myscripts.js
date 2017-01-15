@@ -16,9 +16,10 @@ WaitForLoad();
     
 function WaitForLoad() {
     if (window.jQuery) {
+       
         InitPage();
-    }
-    else {
+    } else {
+        
         setTimeout(WaitForLoad, 50);
     }
 }

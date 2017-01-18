@@ -7,7 +7,7 @@ var diagExampleCount = 0;
 
 (function () {
     var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    ga.src = ('https:' === document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 })();
 
@@ -16,8 +16,9 @@ WaitForLoad();
     
 function WaitForLoad() {
     if (window.jQuery) {
-       
-        InitPage();
+        if (purl) {
+            InitPage();
+        }
     } else {
         
         setTimeout(WaitForLoad, 50);
@@ -30,7 +31,7 @@ function InitPage(){
     var inputboxWatermarkText = "enter token here";
    
     var referrer; 
-    if ("" == document.referrer) {
+    if ("" === document.referrer) {
         referrer = "direct";
     } else {
         referrer = document.referrer;
@@ -39,17 +40,17 @@ function InitPage(){
     _gaq.push(['_trackEvent', 'landing_page', 'navigation',referrer]);
    
 
-    var token = purl(window.location.href, true).fparam("jwt");
+    var token = purl(window.location.href, true).param("jwt");
 
     $("#inputBox").bind('input', function () {
-        if (false == $('#inputBox').hasClass("watermark")) {
+        if (false === $('#inputBox').hasClass("watermark")) {
             DisplayToken($('#inputBox').val());
         }
     });
 
     //watermark jwt input box
     $('#inputBox').blur(function () {
-        if ($(this).val().length == 0) {
+        if ($(this).val().length === 0) {
             $(this).val(inputboxWatermarkText).addClass("watermark");
         }
     });
@@ -73,18 +74,18 @@ function InitPage(){
     $("#ExampleLink").click(function (e) {
         $('#inputBox').val(exampleJWT);
         DisplayToken(exampleJWT);
-        if (diagExampleCount == 0) {
+        if (diagExampleCount === 0) {
             _gaq.push(['_trackEvent', 'user_action', 'use_example_token']);
         }
         diagExampleCount++;
     });
-
+    
     //set token if present
-    if (undefined != token) {        
+    if (undefined !== token) {        
         $('#inputBox').val(token);
         DisplayToken(token);
     } else {
-        if ($('#inputBox').val().length == 0) {
+        if ($('#inputBox').val().length === 0) {
             $('#inputBox').val(inputboxWatermarkText).addClass("watermark");
         }
     }
@@ -144,7 +145,7 @@ function DisplayToken(jwtEncoded) {
     try {
         formattedToken = FormatJWT(jwtEncoded);
         // populate deepLink
-        var dLink = CreateDeepLink(jwtEncoded)
+        var dLink = CreateDeepLink(jwtEncoded);
 
         if ("" == dLink) {
             ShowShareBox(false);
@@ -229,7 +230,7 @@ function FormatJWT(jwt) {
     }
 
     if (segments.length != 3) {
-        throw "JWT is required to have three segments"
+        throw "JWT is required to have three segments";
     }
 
     var header = DisplayJSON(Base64URLDecode(segments[0])).GetFormattedValue();
@@ -516,7 +517,7 @@ function DisplayJSON(value) {
                 index++;
 
                 //Continue to read characters until the final quote is found. The final quote is not preceeded by an even number of back slaches
-                while (!("\"" == inputChars[index] && (slashCount % 2) == 0)) {
+                while (!("\"" == inputChars[index] && (slashCount % 2) === 0)) {
                     builder.Add(inputChars[index]);
                     returnValue.Add(inputChars[index]);
                     if ("\\" == inputChars[index]) {
@@ -552,7 +553,7 @@ function DisplayJSON(value) {
         ExpectedChar: function (char) {
             
             var cp = this.Peek();
-            if (cp == char) {
+            if (cp === char) {
                 index++;
                 return char
             }
@@ -572,22 +573,16 @@ function DisplayJSON(value) {
             switch (this.Peek()) {
                 case "{":
                     return "object";
-                    break;
                 case "[":
                     return "array";
-                    break;
                 case ",":
                     return ",";
-                    break;
                 case ":":
                     return ":";
-                    break;
                 case "]":
                     return "]";
-                    break;
                 case "}":
                     return "}";
-                    break;
                 default:
                     return "value";
             }

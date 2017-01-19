@@ -38,7 +38,7 @@ function InitPage(){
     }
 
     _gaq.push(['_trackEvent', 'landing_page', 'navigation',referrer]);
-   
+    _gaq.push(['_trackEvent', 'scriptVersion', '1']);
 
     var token = purl(window.location.href, true).param("jwt");
 
@@ -96,7 +96,7 @@ function AddTips() {
     $('.jsonValue[tip]').css("text-decoration", "underline");
     $('.jsonValue[tip]').mouseenter(function () {
         
-        if (diagTipCount == 0) {
+        if (diagTipCount === 0) {
             _gaq.push(['_trackEvent', 'user_action', 'claim_value_tip']);
             
 
@@ -110,7 +110,7 @@ function AddTips() {
     $('.jsonField[tip]').mouseenter(function () {
         
         
-        if (diagTipCount == 0) {
+        if (diagTipCount === 0) {
             _gaq.push(['_trackEvent', 'user_action', 'claim_value_tip']);
         }
         diagTipCount++;
@@ -120,7 +120,7 @@ function AddTips() {
 
 function ShowShareBox(boolShow) {
 
-    if (true == boolShow) {
+    if (true === boolShow) {
         // run with share link off, until layout is fixed w/ example token up date
         //  $(".rightItem").fadeIn("medium", "swing");
     } else {
@@ -130,7 +130,7 @@ function ShowShareBox(boolShow) {
 
 function ShowExampleTokenOption(boolShow) {
 
-    if (true == boolShow) {
+    if (true === boolShow) {
       $("#ExampleLink").fadeIn("medium", "swing");
     } else {
         $("#ExampleLink").hide();
@@ -147,13 +147,13 @@ function DisplayToken(jwtEncoded) {
         // populate deepLink
         var dLink = CreateDeepLink(jwtEncoded);
 
-        if ("" == dLink) {
+        if ("" === dLink) {
             ShowShareBox(false);
         }
 
         $('#deepLink').val(dLink);
 
-        if ("" != dLink) {
+        if ("" !== dLink) {
             //ShowExampleTokenOption(false);
             ShowShareBox(true);
         }
@@ -186,8 +186,8 @@ function CreateDeepLink(token) {
     var base = "http://" + window.location.host + "/";
 
     var segments = token.split('.');
-    if (segments.length == 3) {
-        if ("" == segments[2]) {
+    if (segments.length === 3) {
+        if ("" === segments[2]) {
             return base + "#jwt=" + segments[0] + "." + segments[1] + ".";
         } else {
             return base + "#jwt=" + segments[0] + "." + segments[1] + ".X";
@@ -208,7 +208,7 @@ function Base64URLDecode(base64UrlEncodedValue) {
 
             result1 = window.atob(newValue);
             result2 = decodeURIComponent(escape(window.atob(newValue)));
-            if (result1 != result2) {
+            if (result1 !== result2) {
                 _gaq.push(['_trackEvent', 'error_prevented', 'unicode decode']);
                 
             }
@@ -225,11 +225,11 @@ function FormatJWT(jwt) {
     var segments = jwt.split('.');
 
 
-    if (jwt == "") {
+    if (jwt === "") {
         return "";
     }
 
-    if (segments.length != 3) {
+    if (segments.length !== 3) {
         throw "JWT is required to have three segments";
     }
 
@@ -304,7 +304,6 @@ function DisplayJSON(value) {
                     break;
                 default:
                     throw "unexpected condition in FormatNext";
-                    break;
             }
         },
 
@@ -315,7 +314,7 @@ function DisplayJSON(value) {
             indent++;
             this.EndLine(builder);
 
-            while (done == false) {
+            while (done === false) {
 
 
 
@@ -325,7 +324,7 @@ function DisplayJSON(value) {
                 builder.Add(" ");
                 this.FormatNext(builder, indent);
 
-                if (this.Peek() == ",") {
+                if (this.Peek() === ",") {
                     builder.Add(this.ExpectedChar(","));
                 } else {
                     done = true;
@@ -349,11 +348,11 @@ function DisplayJSON(value) {
             //this.EndLine(builder);
 
 
-            while (done == false) {
+            while (done === false) {
                 this.StartLine(builder, indent);
                 this.FormatNext(builder);
 
-                if (this.Peek() == ",") {
+                if (this.Peek() === ",") {
                     builder.Add(this.ExpectedChar(","));
                 } else {
                     done = true;
@@ -373,12 +372,11 @@ function DisplayJSON(value) {
             var currentValue = "";
 
             var tempBuilder = StringBuilder();
-            
-            if (this.Peek() == "\"") {
+
+            if (this.Peek() === "\"") {
                 //read value as a string
                 currentValue = this.ReadQuotedString(tempBuilder);
-            }else if(digits.indexOf(inputChars[index]) >= 0) 
-            {
+            } else if (digits.indexOf(inputChars[index]) >= 0) {
                 //read value as an int
                 currentValue = this.ReadInt(tempBuilder);
             } else {
@@ -389,10 +387,10 @@ function DisplayJSON(value) {
             }
 
             //Add Help Text for claim Value
-            
+
             var helpText = this.GetHelpTextForValue(currentFieldname, currentValue);
 
-            if ("" != helpText) {
+            if ("" !== helpText) {
                 builder.Add("<span class='jsonValue tooltip' ");
                 builder.Add("tip='");
                 builder.Add(helpText);
@@ -404,9 +402,8 @@ function DisplayJSON(value) {
             builder.Add(tempBuilder.Value());
             builder.Add("</span>");
         },
-        
-        GetHelpTextForValue: function(propertyName,propertyValue)
-        {
+
+        GetHelpTextForValue: function (propertyName, propertyValue) {
             var timeFields = ["exp", "nbf", "iat"];
 
             var returnValue = StringBuilder();
@@ -425,8 +422,7 @@ function DisplayJSON(value) {
             return returnValue.Value();
         },
 
-        GetHelpTextForName: function(propertyName)
-        {
+        GetHelpTextForName: function (propertyName) {
             var value = "";
             switch (propertyName) {
                 case 'alg':
@@ -491,7 +487,7 @@ function DisplayJSON(value) {
             currentFieldname = this.ReadQuotedString(tempBuilder);
             var helpText = this.GetHelpTextForName(currentFieldname);
 
-            if ("" != helpText) {
+            if ("" !== helpText) {
                 builder.Add("<span class='jsonField tooltip' ");
                 builder.Add("tip='");
                 builder.Add(helpText);
@@ -511,16 +507,16 @@ function DisplayJSON(value) {
             var slashCount = 0;
             var returnValue = StringBuilder();
 
-            if (this.Peek() == "\"") {
+            if (this.Peek() === "\"") {
                 slashCount = 0;
                 builder.Add("\"");
                 index++;
 
                 //Continue to read characters until the final quote is found. The final quote is not preceeded by an even number of back slaches
-                while (!("\"" == inputChars[index] && (slashCount % 2) === 0)) {
+                while (!("\"" === inputChars[index] && (slashCount % 2) === 0)) {
                     builder.Add(inputChars[index]);
                     returnValue.Add(inputChars[index]);
-                    if ("\\" == inputChars[index]) {
+                    if ("\\" === inputChars[index]) {
                         slashCount++;
                     } else {
                         slashCount = 0;
@@ -530,17 +526,16 @@ function DisplayJSON(value) {
                 }
 
                 builder.Add(inputChars[index]);
-                
+
                 index++;
             } else {
                 throw "expected quote for type";
             }
-        
+
             return returnValue.Value();
         },
 
-        ReadInt: function (builder)
-        {
+        ReadInt: function (builder) {
             var returnValue = StringBuilder();
             while (digits.indexOf(inputChars[index]) >= 0) {
                 builder.Add(inputChars[index]);
@@ -548,14 +543,14 @@ function DisplayJSON(value) {
                 index++;
             }
             return returnValue.Value();
-        },   
+        },
 
         ExpectedChar: function (char) {
-            
+
             var cp = this.Peek();
             if (cp === char) {
                 index++;
-                return char
+                return char;
             }
 
             throw "unexpected char";
@@ -590,7 +585,6 @@ function DisplayJSON(value) {
 
         StartLine: function (builder, indent) {
             builder.Add("<div>");
-            //builder.Add("(" + indent + ")");
             for (var i = 0; i < indent; i++) {
                 builder.Add("<span class='indent'>&nbsp</span>");
             }
@@ -599,6 +593,6 @@ function DisplayJSON(value) {
         EndLine: function (builder) {
             builder.Add("</div>");
         }
-    }
+    };
 
 }

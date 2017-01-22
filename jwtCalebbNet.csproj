@@ -60,10 +60,12 @@
   <ItemGroup>
     <Content Include="About.html" />
     <Content Include="BingSiteAuth.xml" />
+    <Content Include="calebbjwt.1.0.js" />
     <Content Include="mobile.html" />
     <Content Include="index.html" />
     <Content Include="jquery-2.0.3.min.js" />
     <Content Include="MUtest.html" />
+    <Content Include="CalebbJWT.1.js" />
     <Content Include="myscripts.js" />
     <Content Include="purl.js" />
     <Content Include="style.css" />

@@ -1,44 +1,52 @@
-﻿var _gaq = _gaq || [];
-_gaq.push(['_setAccount', 'UA-43600044-1']);
-_gaq.push(['_trackPageview']);
-
-var diagTipCount = 0;
-var diagExampleCount = 0;
-
-(function () {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' === document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-})();
-
-
+﻿WaitForLoadGAC();
 WaitForLoad();
-    
+
+function WaitForLoadGAC() {
+    if (_gaq) {
+        InitGAC();
+    } else {
+        setTimeout(WaitForLoadGAC, 50);
+    }
+}
+
 function WaitForLoad() {
     if (window.jQuery) {
         if (purl) {
             InitPage();
         }
     } else {
-        
         setTimeout(WaitForLoad, 50);
     }
 }
 
-function InitPage(){
-    
+function InitGAC() {
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-43600044-1']);
+    _gaq.push(['_trackPageview']);
+
+    var diagTipCount = 0;
+    var diagExampleCount = 0;
+
+    (function () {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' === document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+}
+
+function InitPage() {
     var exampleJWT = "eyJhbGciOiJSUzI1NiIsIng1dCI6IjdkRC1nZWNOZ1gxWmY3R0xrT3ZwT0IyZGNWQSIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwczovL2NvbnRvc28uY29tIiwiaXNzIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvZTQ4MTc0N2YtNWRhNy00NTM4LWNiYmUtNjdlNTdmN2QyMTRlLyIsIm5iZiI6MTM5MTIxMDg1MCwiZXhwIjoxMzkxMjE0NDUwLCJzdWIiOiIyMTc0OWRhYWUyYTkxMTM3YzI1OTE5MTYyMmZhMSJ9.C4Ny4LeVjEEEybcA1SVaFYFS6nH-Ezae_RrTXUYInjXGt-vBOkAa2ryb-kpOlzU_R4Ydce9tKDNp1qZTomXgHjl-cKybAz0Ut90-dlWgXGvJYFkWRXJ4J0JyS893EDwTEHYaAZH_lCBvoYPhXexD2yt1b-73xSP6oxVlc_sMvz3DY__1Y_OyvbYrThHnHglxvjh88x_lX7RN-Bq82ztumxy97rTWaa_1WJgYuy7h7okD24FtsD9PPLYAply0ygl31ReI0FZOdX12Hl4THJm4uI_4_bPXL6YR2oZhYWp-4POWIPHzG9c_GL8asBjoDY9F5q1ykQiotUBESoMML7_N1g";
     var inputboxWatermarkText = "enter token here";
-   
-    var referrer; 
+
+    var referrer;
     if ("" === document.referrer) {
         referrer = "direct";
     } else {
         referrer = document.referrer;
     }
 
-    _gaq.push(['_trackEvent', 'landing_page', 'navigation',referrer]);
-    _gaq.push(['_trackEvent', 'scriptVersion', '1']);
+    _gaq.push(['_trackEvent', 'landing_page', 'navigation', referrer]);
+    _gaq.push(['_trackEvent', 'scriptVersion', '1.0']);
 
     var token = purl(window.location.href, true).param("jwt");
 
@@ -79,9 +87,9 @@ function InitPage(){
         }
         diagExampleCount++;
     });
-    
+
     //set token if present
-    if (undefined !== token) {        
+    if (undefined !== token) {
         $('#inputBox').val(token);
         DisplayToken(token);
     } else {
@@ -95,10 +103,10 @@ function InitPage(){
 function AddTips() {
     $('.jsonValue[tip]').css("text-decoration", "underline");
     $('.jsonValue[tip]').mouseenter(function () {
-        
+
         if (diagTipCount === 0) {
             _gaq.push(['_trackEvent', 'user_action', 'claim_value_tip']);
-            
+
 
 
         }
@@ -108,8 +116,8 @@ function AddTips() {
 
     $('.jsonField[tip]').css("text-decoration", "underline");
     $('.jsonField[tip]').mouseenter(function () {
-        
-        
+
+
         if (diagTipCount === 0) {
             _gaq.push(['_trackEvent', 'user_action', 'claim_value_tip']);
         }
@@ -131,7 +139,7 @@ function ShowShareBox(boolShow) {
 function ShowExampleTokenOption(boolShow) {
 
     if (true === boolShow) {
-      $("#ExampleLink").fadeIn("medium", "swing");
+        $("#ExampleLink").fadeIn("medium", "swing");
     } else {
         $("#ExampleLink").hide();
     }
@@ -161,7 +169,7 @@ function DisplayToken(jwtEncoded) {
         // write JWT to content
         WriteFormatedTokenToPage(formattedToken);
         _gaq.push(['_trackEvent', 'user_action', 'token_diplayed']);
-        
+
         AddTips();
     } catch (err) {
         WriteFormatedTokenToPage(err);
@@ -171,10 +179,10 @@ function DisplayToken(jwtEncoded) {
 function WriteFormatedTokenToPage(token) {
     $('#decodedToken').html(token);
 
-   
-   if ($('#inputBox').hasClass("watermark")) {
-       $('#inputBox').removeClass("watermark");
-   }
+
+    if ($('#inputBox').hasClass("watermark")) {
+        $('#inputBox').removeClass("watermark");
+    }
 }
 
 
@@ -202,16 +210,16 @@ function Base64URLDecode(base64UrlEncodedValue) {
     var result1;
     var result2;
     var newValue = base64UrlEncodedValue.replace("-", "+").replace("_", "/");
-    
+
 
     try {
 
-            result1 = window.atob(newValue);
-            result2 = decodeURIComponent(escape(window.atob(newValue)));
-            if (result1 !== result2) {
-                _gaq.push(['_trackEvent', 'error_prevented', 'unicode decode']);
-                
-            }
+        result1 = window.atob(newValue);
+        result2 = decodeURIComponent(escape(window.atob(newValue)));
+        if (result1 !== result2) {
+            _gaq.push(['_trackEvent', 'error_prevented', 'unicode decode']);
+
+        }
 
 
     } catch (e) {

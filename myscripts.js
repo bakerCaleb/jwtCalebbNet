@@ -36,7 +36,7 @@ function InitPage() {
     }
 
     _gaq.push(['_trackEvent', 'landing_page', 'navigation', referrer]);
-    _gaq.push(['_trackEvent', 'scriptVersion', '1.0']);
+    _gaq.push(['_trackEvent', 'scriptVersion', '1']);
 
     var token = purl(window.location.href, true).param("jwt");
 

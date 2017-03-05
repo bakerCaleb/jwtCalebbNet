@@ -14,11 +14,15 @@ var diagExampleCount = 0;
 WaitForLoad();
 
 function WaitForLoad() {
-    if (window.jQuery) {
-        if (purl) {
+    var retry = true;
+    if (typeof window.jQuery != "undefined") {
+        if (typeof purl != "undefined") {
+            retry = false;
             InitPage();
         }
-    } else {
+    }
+
+    if (retry) {
         setTimeout(WaitForLoad, 50);
     }
 }
@@ -36,7 +40,7 @@ function InitPage() {
     }
 
     _gaq.push(['_trackEvent', 'landing_page', 'navigation', referrer]);
-    _gaq.push(['_trackEvent', 'scriptVersion', '1.0']);
+    _gaq.push(['_trackEvent', 'scriptVersion', '1.1']);
 
     var token = purl(window.location.href, true).param("jwt");
 

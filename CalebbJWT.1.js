@@ -42,7 +42,16 @@ function InitPage() {
     _gaq.push(['_trackEvent', 'landing_page', 'navigation', referrer]);
     _gaq.push(['_trackEvent', 'scriptVersion', '1.1']);
 
-    var token = purl(window.location.href, true).param("jwt");
+    var url = purl(window.location.href, true);
+    
+    var token = url.fparam("jwt");
+    token = token || url.param("jwt");
+    
+    token = token || url.fparam("id_token");
+    token = token || url.param("id_token");
+    
+    token = token || url.fparam("access_token");
+    token = token || url.param("access_token");
 
     $("#inputBox").bind('input', function () {
         if (false === $('#inputBox').hasClass("watermark")) {

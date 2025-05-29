@@ -19,4 +19,12 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+   build: {
+    rollupOptions: {
+      input: {
+        main: path.resolve(__dirname, "index.html"),     // existing main site
+        lovable: path.resolve(__dirname, "indexl.html"), // your added page
+      },
+    },
+   },
 }));

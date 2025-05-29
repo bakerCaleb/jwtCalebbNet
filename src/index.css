@@ -1,0 +1,79 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 220 26% 14%;
+    --foreground: 220 9% 95%;
+
+    --card: 220 26% 18%;
+    --card-foreground: 220 9% 95%;
+
+    --popover: 220 26% 18%;
+    --popover-foreground: 220 9% 95%;
+
+    --primary: 24 95% 53%;
+    --primary-foreground: 220 26% 14%;
+
+    --secondary: 220 16% 22%;
+    --secondary-foreground: 220 9% 95%;
+
+    --muted: 220 16% 22%;
+    --muted-foreground: 220 9% 70%;
+
+    --accent: 220 16% 26%;
+    --accent-foreground: 220 9% 95%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 220 9% 95%;
+
+    --border: 220 16% 26%;
+    --input: 220 16% 26%;
+    --ring: 24 95% 53%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 220 26% 14%;
+    --sidebar-foreground: 220 9% 95%;
+    --sidebar-primary: 24 95% 53%;
+    --sidebar-primary-foreground: 220 26% 14%;
+    --sidebar-accent: 220 16% 22%;
+    --sidebar-accent-foreground: 220 9% 95%;
+    --sidebar-border: 220 16% 26%;
+    --sidebar-ring: 24 95% 53%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-[#fafafa] text-[#1e293b] font-sans;
+  }
+}
+
+@layer components {
+  .code-block {
+    @apply bg-[#fafafa] border border-[#e2e8f0] rounded-lg p-4 font-mono text-sm;
+  }
+  
+  .status-indicator {
+    @apply inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium;
+  }
+  
+  .status-valid {
+    @apply bg-[#10b981]/10 text-[#10b981] border border-[#10b981]/20;
+  }
+  
+  .status-invalid {
+    @apply bg-[#ef4444]/10 text-[#ef4444] border border-[#ef4444]/20;
+  }
+  
+  .status-warning {
+    @apply bg-[#f59e0b]/10 text-[#f59e0b] border border-[#f59e0b]/20;
+  }
+}

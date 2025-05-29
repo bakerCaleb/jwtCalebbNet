@@ -21,8 +21,8 @@ export default defineConfig(({ mode }) => ({
   build: {
     rollupOptions: {
       input: {
-        main: path.resolve(__dirname, "index.html"),     // existing main site
-        lovable: path.resolve(__dirname, "indexl.html"), // your added page
+         main: 'index.html',
+         test: 'indexl.html'
       },
     },
   },
